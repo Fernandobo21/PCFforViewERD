@@ -1,8 +1,13 @@
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
 export class CustomGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
+	private _container: HTMLDivElement;
+	private _context: ComponentFramework.Context<IInputs>;
+	private props = {};
 
 	/**
 	 * Empty constructor.
@@ -23,6 +28,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
 	{
 		// Add control initialization code
+		this.renderView();
 	}
 
 
@@ -33,6 +39,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
 		// Add code to update control view
+		this.renderView();
 	}
 
 	/** 
@@ -51,6 +58,18 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	public destroy(): void
 	{
 		// Add code to cleanup control if necessary
+	}
+
+	public renderView()
+	{
+		return ReactDOM.render(
+			// Create the React component
+			React.createElement(
+				'<div>HOLA</div>',
+				this.props
+			),
+			this._container
+		);
 	}
 
 }
