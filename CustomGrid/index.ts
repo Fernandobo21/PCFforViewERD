@@ -3,6 +3,8 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
+import MaterialUIDataGrid, * as MaterialGridReplacement from './MaterialUIDataGrid';
+import FluentUIDataGrid, * as FluentUIGridReplacement from './FluentUIDataGrid';
 
 export class CustomGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private _container: HTMLDivElement;
@@ -27,8 +29,14 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 */
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
 	{
+		
 		// Add control initialization code
+		
+		this._container = document.createElement("div");
+		// var test = this.renderView();
+		// debugger;
 		this.renderView();
+		container.appendChild(this._container);
 	}
 
 
@@ -39,7 +47,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
 		// Add code to update control view
-		this.renderView();
+		//this.renderView();
 	}
 
 	/** 
@@ -65,11 +73,11 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		return ReactDOM.render(
 			// Create the React component
 			React.createElement(
-				'<div>HOLA</div>',
+				//MaterialUIDataGrid,
+				FluentUIDataGrid,
 				this.props
 			),
 			this._container
 		);
 	}
-
 }
