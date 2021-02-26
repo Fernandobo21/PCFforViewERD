@@ -6,11 +6,20 @@
     "build": "pcf-scripts build",
     "clean": "pcf-scripts clean",
     "rebuild": "pcf-scripts rebuild",
-    "start": "pcf-scripts start"
+    "start": "pcf-scripts start",
+    "start watch": "pcf-scripts start watch"
   },
   "dependencies": {
+    "@devexpress/dx-react-core": "^2.7.4",
+    "@devexpress/dx-react-grid": "^2.7.4",
+    "@devexpress/dx-react-grid-material-ui": "^2.7.4",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/data-grid": "^4.0.0-alpha.20",
+    "@material-ui/styles": "^4.11.3",
     "@types/node": "^10.12.18",
-    "@types/powerapps-component-framework": "^1.2.0"
+    "@types/powerapps-component-framework": "^1.2.0",
+    "office-ui-fabric-react": "^7.161.0",
+    "react-data-grid": "^7.0.0-canary.36"
   },
   "devDependencies": {
     "pcf-scripts": "^1",
