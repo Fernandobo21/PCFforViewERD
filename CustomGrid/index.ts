@@ -29,25 +29,24 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 */
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
 	{
-		
-		// Add control initialization code
-		
-		this._container = document.createElement("div");
-		// var test = this.renderView();
-		// debugger;
-		this.renderView();
-		container.appendChild(this._container);
+		context.mode.allocatedHeight = 1000;
+		context.mode.allocatedWidth = 1000;
+		this._context = context;
+		this._selectedGrid = context.parameters.gridSelect.raw;
+		this._container = container;
 	}
-
-
 	/**
 	 * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
 	 * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
-		// Add code to update control view
-		//this.renderView();
+		context.mode.allocatedHeight = 1000;
+		context.mode.allocatedWidth = 1000;
+		var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
+		var alertOptions = {​​ height: 120, width: 260 }​​;	
+		context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
+		this.renderView(this._context.parameters.gridSelect.raw);
 	}
 
 	/** 
@@ -68,16 +67,26 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		// Add code to cleanup control if necessary
 	}
 
-	public renderView()
+	public renderView(selectedGrid: string)
 	{
-		return ReactDOM.render(
-			// Create the React component
-			React.createElement(
-				//MaterialUIDataGrid,
-				FluentUIDataGrid,
-				this.props
-			),
-			this._container
-		);
+		switch(selectedGrid)
+		{
+			case "FluentUI":
+				return ReactDOM.render(
+					React.createElement(
+						FluentUIDataGrid,
+						this.props
+					),
+					this._container
+				);
+			case "MaterialUI":
+				return ReactDOM.render(
+					React.createElement(
+						MaterialUIDataGrid,
+						this.props
+					),
+					this._container
+				);				
+		}
 	}
 }
