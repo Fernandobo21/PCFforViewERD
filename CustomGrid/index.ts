@@ -9,14 +9,16 @@ import FluentUIDataGrid, * as FluentUIGridReplacement from './FluentUIDataGrid';
 export class CustomGrid implements ComponentFramework.StandardControl<IInputs, IOutputs> {
 	private _container: HTMLDivElement;
 	private _context: ComponentFramework.Context<IInputs>;
-	private props = {};
+	private props:any = {
+		columnsCRM: [],
+		valueCRM: ""
+	};
 
 	/**
 	 * Empty constructor.
 	 */
 	constructor()
 	{
-
 	}
 
 	/**
@@ -29,10 +31,13 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 */
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
 	{
+		this.props = {
+			valueCRM: "testing Fer",
+			columnsCRM: ['File Type', 'Name', 'Date Modified', 'Modified By', 'File Size']
+		}
 		context.mode.allocatedHeight = 1000;
 		context.mode.allocatedWidth = 1000;
 		this._context = context;
-		this._selectedGrid = context.parameters.gridSelect.raw;
 		this._container = container;
 	}
 	/**
@@ -43,9 +48,19 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	{
 		context.mode.allocatedHeight = 1000;
 		context.mode.allocatedWidth = 1000;
+		
 		var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
-		var alertOptions = {​​ height: 120, width: 260 }​​;	
-		context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
+		var alertOptions = {​​ height: 120, width: 260 }​​;
+		
+		
+		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
+			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
+			debugger;
+			let name = currentRecord.getFormattedValue("NameAttribute");
+			let number = currentRecord.getValue("NumberAttribute");	
+		}
+		
+		//context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
 		this.renderView(this._context.parameters.gridSelect.raw);
 	}
 
@@ -64,7 +79,8 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 */
 	public destroy(): void
 	{
-		// Add code to cleanup control if necessary
+		this.props = null;
+		ReactDOM.unmountComponentAtNode(this._container);
 	}
 
 	public renderView(selectedGrid: string)
