@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { TextField } from 'office-ui-fabric-react/lib/TextField';
-import { Toggle } from 'office-ui-fabric-react/lib/Toggle';
 import { Fabric } from 'office-ui-fabric-react/lib/Fabric';
 import { Announced } from 'office-ui-fabric-react/lib/Announced';
 import { DetailsList, DetailsListLayoutMode, Selection, SelectionMode, IColumn} from 'office-ui-fabric-react/lib/DetailsList';
@@ -22,7 +21,6 @@ const classNames = mergeStyleSets({
         verticalAlign: 'middle',
         height: '100%',
         width: '0px',
-        visibility: 'hidden',
       },
     },
   },
@@ -35,13 +33,13 @@ const classNames = mergeStyleSets({
     display: 'flex',
     flexWrap: 'wrap',
   },
-  exampleToggle: {
-    display: 'inline-block',
-    marginBottom: '10px',
-    marginRight: '30px',
-  },
+  // exampleToggle: {
+  //   display: 'inline-block',
+  //   marginBottom: '10px',
+  //   marginRight: '30px',
+  // },
   selectionDetails: {
-    marginBottom: '20px',
+    marginBottom: '15px',
   },
 });
 const controlStyles = {
@@ -56,7 +54,6 @@ export interface IDetailsListDocumentsExampleState {
   items: IDocument[];
   selectionDetails: string;
   isModalSelection: boolean;
-  isCompactMode: boolean;
   announcedMessage?: string;
 }
 
@@ -76,34 +73,41 @@ export interface IDocument {
 export class DetailsListDocumentsExample extends React.Component<{}, IDetailsListDocumentsExampleState> {
   private _selection: Selection;
   private _allItems: IDocument[];
+  private _allColumns: IColumn[];
 
-  constructor(props: {}) {
+  constructor(props:any) {
     super(props);
+    debugger;
+    
 
-    this._allItems = _generateDocuments();
-
-    const columns: IColumn[] = [
-      {
-        key: 'column1',
-        name: 'File Type',
-        className: classNames.fileIconCell,
-        iconClassName: classNames.fileIconHeaderIcon,
-        ariaLabel: 'Column operations for File type, Press to sort on File type',
-        iconName: 'Page',
-        isIconOnly: true,
-        fieldName: 'name',
-        minWidth: 16,
-        maxWidth: 16,
-        onColumnClick: this._onColumnClick,
-        onRender: (item: IDocument) => (
-          <TooltipHost content={`${item.fileType} file`}>
-            <img src={item.iconName} className={classNames.fileIconImg} alt={`${item.fileType} file icon`} />
-          </TooltipHost>
-        ),
-      },
+    this._allItems = _generateDocuments(props.valueCRM);
+    var i:number = 0;
+    // for(let columnName of props.columnsCRM)
+    // {
+    //   this._allColumns.push({
+    //     key: 'column' + i++,
+    //     name: columnName,
+    //     className: classNames.fileIconCell,
+    //     iconClassName: classNames.fileIconHeaderIcon,
+    //     ariaLabel: 'Column operations for File type, Press to sort on File type',
+    //     iconName: 'Page',
+    //     isIconOnly: true,
+    //     fieldName: 'name',
+    //     minWidth: 16,
+    //     maxWidth: 16,
+    //     onColumnClick: this._onColumnClick,
+    //     onRender: (item: IDocument) => (
+    //       <TooltipHost content={`${item.fileType} file`}>
+    //         <img src={item.iconName} className={classNames.fileIconImg} alt={`${item.fileType} file icon`} />
+    //       </TooltipHost>
+    //     )
+    //   });
+    // }
+     const columns: IColumn[] = 
+     [
       {
         key: 'column2',
-        name: 'Name',
+        name: props.columnsCRM[1],
         fieldName: 'name',
         minWidth: 210,
         maxWidth: 350,
@@ -119,7 +123,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       },
       {
         key: 'column3',
-        name: 'Date Modified',
+        name: props.columnsCRM[2],
         fieldName: 'dateModifiedValue',
         minWidth: 70,
         maxWidth: 90,
@@ -133,7 +137,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       },
       {
         key: 'column4',
-        name: 'Modified By',
+        name: props.columnsCRM[3],
         fieldName: 'modifiedBy',
         minWidth: 70,
         maxWidth: 90,
@@ -148,7 +152,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       },
       {
         key: 'column5',
-        name: 'File Size',
+        name: props.columnsCRM[4],
         fieldName: 'fileSizeRaw',
         minWidth: 70,
         maxWidth: 90,
@@ -169,50 +173,32 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         });
       },
     });
-
+    debugger;
     this.state = {
       items: this._allItems,
       columns: columns,
       selectionDetails: this._getSelectionDetails(),
-      isModalSelection: false,
-      isCompactMode: false,
+      isModalSelection: true,
       announcedMessage: undefined,
     };
   }
 
   public render() {
-    const { columns, isCompactMode, items, selectionDetails, isModalSelection, announcedMessage } = this.state;
+    const { columns, items, selectionDetails, isModalSelection, announcedMessage } = this.state;
 
     return (
       <Fabric>
         <div className={classNames.controlWrapper}>
-          <Toggle
-            label="Enable compact mode"
-            checked={isCompactMode}
-            onChange={this._onChangeCompactMode}
-            onText="Compact"
-            offText="Normal"
-            styles={controlStyles}
-          />
-          <Toggle
-            label="Enable modal selection"
-            checked={isModalSelection}
-            onChange={this._onChangeModalSelection}
-            onText="Modal"
-            offText="Normal"
-            styles={controlStyles}
-          />
           <TextField label="Filter by name:" onChange={this._onChangeText} styles={controlStyles} />
           <Announced message={`Number of items after filter applied: ${items.length}.`} />
         </div>
         <div className={classNames.selectionDetails}>{selectionDetails}</div>
         <Announced message={selectionDetails} />
         {announcedMessage ? <Announced message={announcedMessage} /> : undefined}
-        {isModalSelection ? (
           <MarqueeSelection selection={this._selection}>
             <DetailsList
               items={items}
-              compact={isCompactMode}
+              compact={true}
               columns={columns}
               selectionMode={SelectionMode.multiple}
               getKey={this._getKey}
@@ -228,19 +214,6 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
               checkButtonAriaLabel="Row checkbox"
             />
           </MarqueeSelection>
-        ) : (
-          <DetailsList
-            items={items}
-            compact={isCompactMode}
-            columns={columns}
-            selectionMode={SelectionMode.none}
-            getKey={this._getKey}
-            setKey="none"
-            layoutMode={DetailsListLayoutMode.justified}
-            isHeaderVisible={true}
-            onItemInvoked={this._onItemInvoked}
-          />
-        )}
       </Fabric>
     );
   }
@@ -253,21 +226,11 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
   private _getKey(item: any, index?: number): string {
     return item.key;
   }
-
-  private _onChangeCompactMode = (ev: React.MouseEvent<HTMLElement>, checked?: boolean): void => {
-    this.setState({ isCompactMode: (checked!=undefined && checked.valueOf) ? true : false });
-  };
-
-  private _onChangeModalSelection = (ev: React.MouseEvent<HTMLElement>, checked?: boolean): void => {
-    this.setState({ isModalSelection: (checked!=undefined && checked.valueOf) ? true : false });
-  };
-
   private _onChangeText = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text?: string): void => {
     this.setState({
       items: text ? this._allItems.filter(i => i.name.toLowerCase().indexOf(text) > -1) : this._allItems,
     });
   };
-
   private _onItemInvoked(item: any): void {
     alert(`Item invoked: ${item.name}`);
   }
@@ -316,9 +279,9 @@ function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boo
   return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
 }
 
-function _generateDocuments() {
+function _generateDocuments(valueCRM:string) {
   const items: IDocument[] = [];
-  for (let i = 0; i < 500; i++) {
+  for (let i = 0; i < 100; i++) {
     const randomDate = _randomDate(new Date(2012, 0, 1), new Date());
     const randomFileSize = _randomFileSize();
     const randomFileType = _randomFileIcon();
@@ -331,8 +294,8 @@ function _generateDocuments() {
       .join(' ');
     items.push({
       key: i.toString(),
-      name: fileName,
-      value: fileName,
+      name: valueCRM,
+      value: valueCRM,
       iconName: randomFileType.url,
       fileType: randomFileType.docType,
       modifiedBy: userName,
