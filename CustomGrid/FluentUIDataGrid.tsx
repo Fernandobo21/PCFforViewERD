@@ -5,7 +5,6 @@ import { Announced } from 'office-ui-fabric-react/lib/Announced';
 import { DetailsList, DetailsListLayoutMode, Selection, SelectionMode, IColumn} from 'office-ui-fabric-react/lib/DetailsList';
 import { MarqueeSelection } from 'office-ui-fabric-react/lib/MarqueeSelection';
 import { mergeStyleSets } from 'office-ui-fabric-react/lib/Styling';
-import { TooltipHost } from 'office-ui-fabric-react/lib/Tooltip';
 
 const classNames = mergeStyleSets({
   fileIconHeaderIcon: {
@@ -33,11 +32,6 @@ const classNames = mergeStyleSets({
     display: 'flex',
     flexWrap: 'wrap',
   },
-  // exampleToggle: {
-  //   display: 'inline-block',
-  //   marginBottom: '10px',
-  //   marginRight: '30px',
-  // },
   selectionDetails: {
     marginBottom: '15px',
   },
@@ -61,19 +55,14 @@ export interface IDocument {
   key: string;
   name: string;
   value: string;
-  iconName: string;
-  fileType: string;
   modifiedBy: string;
   dateModified: string;
   dateModifiedValue: number;
-  fileSize: string;
-  fileSizeRaw: number;
 }
 
 export class DetailsListDocumentsExample extends React.Component<{}, IDetailsListDocumentsExampleState> {
   private _selection: Selection;
   private _allItems: IDocument[];
-  private _allColumns: IColumn[];
 
   constructor(props:any) {
     super(props);
@@ -106,7 +95,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
      const columns: IColumn[] = 
      [
       {
-        key: 'column2',
+        key: props.keyCRM[1],
         name: props.columnsCRM[1],
         fieldName: 'name',
         minWidth: 210,
@@ -122,7 +111,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         isPadded: true,
       },
       {
-        key: 'column3',
+        key: props.keyCRM[2],
         name: props.columnsCRM[2],
         fieldName: 'dateModifiedValue',
         minWidth: 70,
@@ -136,7 +125,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         isPadded: true,
       },
       {
-        key: 'column4',
+        key: props.keyCRM[3],
         name: props.columnsCRM[3],
         fieldName: 'modifiedBy',
         minWidth: 70,
@@ -151,7 +140,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         isPadded: true,
       },
       {
-        key: 'column5',
+        key: props.keyCRM[4],
         name: props.columnsCRM[4],
         fieldName: 'fileSizeRaw',
         minWidth: 70,
@@ -161,7 +150,8 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         data: 'number',
         onColumnClick: this._onColumnClick,
         onRender: (item: IDocument) => {
-          return <span>{item.fileSize}</span>;
+          // return <span>{item.fileSize}</span>;
+          return <span>{50}</span>;
         },
       },
     ];
@@ -173,7 +163,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         });
       },
     });
-    debugger;
+
     this.state = {
       items: this._allItems,
       columns: columns,
@@ -192,9 +182,6 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
           <TextField label="Filter by name:" onChange={this._onChangeText} styles={controlStyles} />
           <Announced message={`Number of items after filter applied: ${items.length}.`} />
         </div>
-        <div className={classNames.selectionDetails}>{selectionDetails}</div>
-        <Announced message={selectionDetails} />
-        {announcedMessage ? <Announced message={announcedMessage} /> : undefined}
           <MarqueeSelection selection={this._selection}>
             <DetailsList
               items={items}
@@ -214,6 +201,9 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
               checkButtonAriaLabel="Row checkbox"
             />
           </MarqueeSelection>
+          <div className={classNames.selectionDetails}>{selectionDetails}</div>
+          <Announced message={selectionDetails} />
+          {announcedMessage ? <Announced message={announcedMessage} /> : undefined}
       </Fabric>
     );
   }
@@ -232,7 +222,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
     });
   };
   private _onItemInvoked(item: any): void {
-    alert(`Item invoked: ${item.name}`);
+    alert(`Item invoked: ${item.key}`);
   }
 
   private _getSelectionDetails(): string {
@@ -279,32 +269,36 @@ function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boo
   return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
 }
 
-function _generateDocuments(valueCRM:string) {
+function _generateDocuments(valueCRM:[]) {
   const items: IDocument[] = [];
-  for (let i = 0; i < 100; i++) {
     const randomDate = _randomDate(new Date(2012, 0, 1), new Date());
-    const randomFileSize = _randomFileSize();
-    const randomFileType = _randomFileIcon();
-    let fileName = _lorem(2);
-    fileName = fileName.charAt(0).toUpperCase() + fileName.slice(1).concat(`.${randomFileType.docType}`);
     let userName = _lorem(2);
     userName = userName
       .split(' ')
       .map((name: string) => name.charAt(0).toUpperCase() + name.slice(1))
       .join(' ');
-    items.push({
-      key: i.toString(),
-      name: valueCRM,
-      value: valueCRM,
-      iconName: randomFileType.url,
-      fileType: randomFileType.docType,
-      modifiedBy: userName,
-      dateModified: randomDate.dateFormatted,
-      dateModifiedValue: randomDate.value,
-      fileSize: randomFileSize.value,
-      fileSizeRaw: randomFileSize.rawSize,
+    valueCRM.map((value: string, index: number) => {
+        items.push({
+          key: index.toString(),
+          name: value,
+          value: value,
+          modifiedBy: userName,
+          dateModified: randomDate.dateFormatted,
+          dateModifiedValue: randomDate.value
+        });
     });
-  }
+    // items.push({
+    //   key: i.toString(),
+    //   name: valueCRM,
+    //   value: valueCRM,
+    //   iconName: randomFileType.url,
+    //   fileType: randomFileType.docType,
+    //   modifiedBy: userName,
+    //   dateModified: randomDate.dateFormatted,
+    //   dateModifiedValue: randomDate.value,
+    //   fileSize: randomFileSize.value,
+    //   fileSizeRaw: randomFileSize.rawSize,
+    // });
   return items;
 }
 
@@ -313,54 +307,6 @@ function _randomDate(start: Date, end: Date): { value: number; dateFormatted: st
   return {
     value: date.valueOf(),
     dateFormatted: date.toLocaleDateString(),
-  };
-}
-
-const FILE_ICONS: { name: string }[] = [
-  { name: 'accdb' },
-  { name: 'audio' },
-  { name: 'code' },
-  { name: 'csv' },
-  { name: 'docx' },
-  { name: 'dotx' },
-  { name: 'mpp' },
-  { name: 'mpt' },
-  { name: 'model' },
-  { name: 'one' },
-  { name: 'onetoc' },
-  { name: 'potx' },
-  { name: 'ppsx' },
-  { name: 'pdf' },
-  { name: 'photo' },
-  { name: 'pptx' },
-  { name: 'presentation' },
-  { name: 'potx' },
-  { name: 'pub' },
-  { name: 'rtf' },
-  { name: 'spreadsheet' },
-  { name: 'txt' },
-  { name: 'vector' },
-  { name: 'vsdx' },
-  { name: 'vssx' },
-  { name: 'vstx' },
-  { name: 'xlsx' },
-  { name: 'xltx' },
-  { name: 'xsn' },
-];
-
-function _randomFileIcon(): { docType: string; url: string } {
-  const docType: string = FILE_ICONS[Math.floor(Math.random() * FILE_ICONS.length)].name;
-  return {
-    docType,
-    url: `https://static2.sharepointonline.com/files/fabric/assets/item-types/16/${docType}.svg`,
-  };
-}
-
-function _randomFileSize(): { value: string; rawSize: number } {
-  const fileSize: number = Math.floor(Math.random() * 100) + 30;
-  return {
-    value: `${fileSize} KB`,
-    rawSize: fileSize,
   };
 }
 
