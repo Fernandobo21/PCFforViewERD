@@ -10,8 +10,10 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	private _container: HTMLDivElement;
 	private _context: ComponentFramework.Context<IInputs>;
 	private props:any = {
+		keyCRM: [],
 		columnsCRM: [],
-		valueCRM: ""
+		valueCRM: [],
+		typeCRM: []
 	};
 
 	/**
@@ -32,8 +34,10 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
 	{
 		this.props = {
-			valueCRM: "testing Fer",
-			columnsCRM: ['File Type', 'Name', 'Date Modified', 'Modified By', 'File Size']
+			keyCRM: ['id1', 'id2', 'id3', 'id4'],
+			valueCRM: ['testing fer1', '19/11/1984', 'testing fer2', '9'],
+			columnsCRM: ['File Type', 'Name', 'Date Modified', 'Modified By', 'File Size'],
+			typeCRM: ['string', 'datetime', 'string', 'numeric']
 		}
 		context.mode.allocatedHeight = 1000;
 		context.mode.allocatedWidth = 1000;
