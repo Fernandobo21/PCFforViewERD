@@ -35,9 +35,18 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	{
 		this.props = {
 			keyCRM: ['19449c33-f214-4365-9739-3f54a7420166', '3a78f665-d31d-444a-b19b-fd72e69d35bf', '56dafe62-14cc-45cc-86c7-74a789283c76', '3d2880c3-7c62-42ea-bb4d-9ecec0607334', '0c566692-79d7-4172-aeaf-9f7fb98429f6', '89a7f0da-1c9c-4583-b395-e4b3afec39b7', '3f25b208-0d70-4913-80b4-0999724fab5a', '1fc52a93-a3e7-4a6a-ad49-009597282c72', 'ac6372fa-f1ca-4748-9051-17e6fc802536', 'f76baa88-98c5-41eb-b253-be669618eeda'],
-			valueCRM: ['testing fer1', '19/11/1984', 'testing fer2', '9'],
-			columnsCRM: ['File Type', 'Name', 'Date Modified', 'Modified By', 'File Size'],
-			typeCRM: ['string', 'datetime', 'string', 'numeric']
+			valueCRM: [
+				{id: '19449c33-f214-4365-9739-3f54a7420166', lastName: 'Bo Gimenez', firstName: 'Fernando', age: 36},
+				{id: '3a78f665-d31d-444a-b19b-fd72e69d35bf', lastName: 'Cuesta Vera', firstName: 'Cesar', age: 25},
+				{id: '56dafe62-14cc-45cc-86c7-74a789283c76', lastName: 'Rincon Dynamics', firstName: 'El', age: 11}],
+			columnsCRM: ['id', 'firstName', 'lastName', 'age'],
+			typeCRM: ['string', 'string', 'string', 'number']
+			/*
+				'string' (default)
+				'number'
+				'date'
+				'dateTime'
+			*/
 		}
 		context.mode.allocatedHeight = 1000;
 		context.mode.allocatedWidth = 1000;
@@ -55,14 +64,22 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		
 		this.props = {
 			keyCRM: ['19449c33-f214-4365-9739-3f54a7420166', '3a78f665-d31d-444a-b19b-fd72e69d35bf', '56dafe62-14cc-45cc-86c7-74a789283c76', '3d2880c3-7c62-42ea-bb4d-9ecec0607334', '0c566692-79d7-4172-aeaf-9f7fb98429f6', '89a7f0da-1c9c-4583-b395-e4b3afec39b7', '3f25b208-0d70-4913-80b4-0999724fab5a', '1fc52a93-a3e7-4a6a-ad49-009597282c72', 'ac6372fa-f1ca-4748-9051-17e6fc802536', 'f76baa88-98c5-41eb-b253-be669618eeda'],
-			valueCRM: ['testing fer1', '19/11/1984', 'testing fer2', '9'],
-			columnsCRM: ['File Type', 'Name', 'Date Modified', 'Modified By', 'File Size'],
-			typeCRM: ['string', 'datetime', 'string', 'numeric']
+			valueCRM: [
+				{id: '19449c33-f214-4365-9739-3f54a7420166', lastName: 'Bo Gimenez', firstName: 'Fernando', age: 36},
+				{id: '3a78f665-d31d-444a-b19b-fd72e69d35bf', lastName: 'Cuesta Vera', firstName: 'Cesar', age: 25},
+				{id: '56dafe62-14cc-45cc-86c7-74a789283c76', lastName: 'Rincon Dynamics', firstName: 'El', age: 11}],
+			columnsCRM: ['id', 'firstName', 'lastName', 'age'],
+			typeCRM: ['string', 'string', 'string', 'number']
+			/*
+				'string' (default)
+				'number'
+				'date'
+				'dateTime'
+			*/
 		}
 
 		var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
 		var alertOptions = {​​ height: 120, width: 260 }​​;
-		
 		
 		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
 			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
