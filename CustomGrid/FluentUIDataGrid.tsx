@@ -51,13 +51,19 @@ export interface IDetailsListDocumentsExampleState {
   announcedMessage?: string;
 }
 
+// export interface IDocument {
+//   key: string;
+//   name: string;
+//   value: string;
+//   modifiedBy: string;
+//   dateModified: string;
+//   dateModifiedValue: number;
+// }
 export interface IDocument {
-  key: string;
-  name: string;
-  value: string;
-  modifiedBy: string;
-  dateModified: string;
-  dateModifiedValue: number;
+  id: string;
+  firstName: string;
+  lastName: string;
+  age: number;
 }
 
 export class DetailsListDocumentsExample extends React.Component<{}, IDetailsListDocumentsExampleState> {
@@ -66,9 +72,6 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
 
   constructor(props:any) {
     super(props);
-    debugger;
-    
-
     this._allItems = _generateDocuments(props.valueCRM);
     var i:number = 0;
     // for(let columnName of props.columnsCRM)
@@ -107,26 +110,15 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         sortAscendingAriaLabel: 'Sorted A to Z',
         sortDescendingAriaLabel: 'Sorted Z to A',
         onColumnClick: this._onColumnClick,
+        onRender: (item: IDocument) => {
+              return <span>{item.firstName}</span>;
+        },
         data: 'string',
         isPadded: true,
       },
       {
         key: props.keyCRM[2],
         name: props.columnsCRM[2],
-        fieldName: 'dateModifiedValue',
-        minWidth: 70,
-        maxWidth: 90,
-        isResizable: true,
-        onColumnClick: this._onColumnClick,
-        data: 'number',
-        onRender: (item: IDocument) => {
-          return <span>{item.dateModified}</span>;
-        },
-        isPadded: true,
-      },
-      {
-        key: props.keyCRM[3],
-        name: props.columnsCRM[3],
         fieldName: 'modifiedBy',
         minWidth: 70,
         maxWidth: 90,
@@ -135,13 +127,13 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         data: 'string',
         onColumnClick: this._onColumnClick,
         onRender: (item: IDocument) => {
-          return <span>{item.modifiedBy}</span>;
+          return <span>{item.lastName}</span>;
         },
         isPadded: true,
       },
       {
-        key: props.keyCRM[4],
-        name: props.columnsCRM[4],
+        key: props.keyCRM[3],
+        name: props.columnsCRM[3],
         fieldName: 'fileSizeRaw',
         minWidth: 70,
         maxWidth: 90,
@@ -150,8 +142,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
         data: 'number',
         onColumnClick: this._onColumnClick,
         onRender: (item: IDocument) => {
-          // return <span>{item.fileSize}</span>;
-          return <span>{50}</span>;
+          return <span>{item.age}</span>;
         },
       },
     ];
@@ -212,27 +203,25 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       this._selection.setAllSelected(false);
     }
   }
-
   private _getKey(item: any, index?: number): string {
     return item.key;
   }
   private _onChangeText = (ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, text?: string): void => {
     this.setState({
-      items: text ? this._allItems.filter(i => i.name.toLowerCase().indexOf(text) > -1) : this._allItems,
+      items: text ? this._allItems.filter(i => i.firstName.toLowerCase().indexOf(text) > -1) : this._allItems,
     });
   };
   private _onItemInvoked(item: any): void {
-    alert(`Item invoked: ${item.key}`);
+    alert(`Item invoked: ${item.id}`);
   }
 
   private _getSelectionDetails(): string {
     const selectionCount = this._selection.getSelectedCount();
-
     switch (selectionCount) {
       case 0:
         return 'No items selected';
       case 1:
-        return '1 item selected: ' + (this._selection.getSelection()[0] as IDocument).name;
+        return '1 item selected: ' + (this._selection.getSelection()[0] as IDocument).firstName;
       default:
         return `${selectionCount} items selected`;
     }
@@ -269,56 +258,15 @@ function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boo
   return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
 }
 
-function _generateDocuments(valueCRM:[]) {
+function _generateDocuments(valueCRM:any) {
   const items: IDocument[] = [];
-    const randomDate = _randomDate(new Date(2012, 0, 1), new Date());
-    let userName = _lorem(2);
-    userName = userName
-      .split(' ')
-      .map((name: string) => name.charAt(0).toUpperCase() + name.slice(1))
-      .join(' ');
-    valueCRM.map((value: string, index: number) => {
+    valueCRM.map((value:any, index: number) => {
         items.push({
-          key: index.toString(),
-          name: value,
-          value: value,
-          modifiedBy: userName,
-          dateModified: randomDate.dateFormatted,
-          dateModifiedValue: randomDate.value
+          id: value.id,
+          firstName: value.firstName,
+          lastName: value.lastName,
+          age: value.age
         });
     });
-    // items.push({
-    //   key: i.toString(),
-    //   name: valueCRM,
-    //   value: valueCRM,
-    //   iconName: randomFileType.url,
-    //   fileType: randomFileType.docType,
-    //   modifiedBy: userName,
-    //   dateModified: randomDate.dateFormatted,
-    //   dateModifiedValue: randomDate.value,
-    //   fileSize: randomFileSize.value,
-    //   fileSizeRaw: randomFileSize.rawSize,
-    // });
   return items;
-}
-
-function _randomDate(start: Date, end: Date): { value: number; dateFormatted: string } {
-  const date: Date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-  return {
-    value: date.valueOf(),
-    dateFormatted: date.toLocaleDateString(),
-  };
-}
-
-const LOREM_IPSUM = (
-  'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut ' +
-  'labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut ' +
-  'aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore ' +
-  'eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt '
-).split(' ');
-let loremIndex = 0;
-function _lorem(wordCount: number): string {
-  const startIndex = loremIndex + wordCount > LOREM_IPSUM.length ? 0 : loremIndex;
-  loremIndex = startIndex + wordCount;
-  return LOREM_IPSUM.slice(startIndex, loremIndex).join(' ');
 }
