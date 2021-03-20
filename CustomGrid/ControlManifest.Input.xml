@@ -3,8 +3,7 @@
   <control namespace="elrincon" constructor="CustomGrid" version="0.0.1" display-name-key="CustomGrid" description-key="CustomGrid description" control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="sampleDataSet" display-name-key="Dataset_Display_Key">
-      <property-set name="NameAttribute" display-name-key="StringAttribute" description-key="Name of the tag" of-type="SingleLine.Text" usage="bound" required="true" />
-      <property-set name="NumberAttribute" display-name-key="NumberAttribute" description-key="Number that will be transformed in tag size" of-type="Whole.None" usage="bound" required="false" />
+      <property-set name="valuesCRM" display-name-key="Values CRM" description-key="Values from CRM in JSON" of-type="SingleLine.TextArea" usage="bound" required="false" />
     </data-set>
     <property name="gridSelect" display-name-key="Select Grid" description-key="Select Grid" of-type="Enum" usage="bound" required="true">
       <value name="FluentUI" display-name-key="FluentUI" description-key="Render the FluentUI grid" default="true">FluentUI</value>
