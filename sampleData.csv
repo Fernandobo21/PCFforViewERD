@@ -1,3 +1,4 @@
-﻿name;lastname;age
-fernando;bo;36
-cesar;cuesta;26
+ValueCRM;name;lastname;age;
+{"id": "19449c33-f214-4365-9739-3f54a7420166", "lastName": "Bo Gimenez", "firstName": "Fernando", "age": 36};fernando;bo;36;
+{"id": "3a78f665-d31d-444a-b19b-fd72e69d35bf", "lastName": "Cuesta Vera", "firstName": "Cesar", "age": 25};cesar;cuesta;26;
+{"id": "56dafe62-14cc-45cc-86c7-74a789283c76", "lastName": "Rincon Dynamics", "firstName": "El", "age": 11};el;Rincon;11;
