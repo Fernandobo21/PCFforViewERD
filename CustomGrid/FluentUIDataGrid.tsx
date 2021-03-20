@@ -51,14 +51,6 @@ export interface IDetailsListDocumentsExampleState {
   announcedMessage?: string;
 }
 
-// export interface IDocument {
-//   key: string;
-//   name: string;
-//   value: string;
-//   modifiedBy: string;
-//   dateModified: string;
-//   dateModifiedValue: number;
-// }
 export interface IDocument {
   id: string;
   firstName: string;
@@ -69,11 +61,14 @@ export interface IDocument {
 export class DetailsListDocumentsExample extends React.Component<{}, IDetailsListDocumentsExampleState> {
   private _selection: Selection;
   private _allItems: IDocument[];
-
+  private _props:any;
   constructor(props:any) {
     super(props);
+    this._props = props;
+    debugger;
     this._allItems = _generateDocuments(props.valueCRM);
     var i:number = 0;
+    
     // for(let columnName of props.columnsCRM)
     // {
     //   this._allColumns.push({
@@ -95,58 +90,8 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
     //     )
     //   });
     // }
-     const columns: IColumn[] = 
-     [
-      {
-        key: props.keyCRM[1],
-        name: props.columnsCRM[1],
-        fieldName: 'name',
-        minWidth: 210,
-        maxWidth: 350,
-        isRowHeader: true,
-        isResizable: true,
-        isSorted: true,
-        isSortedDescending: false,
-        sortAscendingAriaLabel: 'Sorted A to Z',
-        sortDescendingAriaLabel: 'Sorted Z to A',
-        onColumnClick: this._onColumnClick,
-        onRender: (item: IDocument) => {
-              return <span>{item.firstName}</span>;
-        },
-        data: 'string',
-        isPadded: true,
-      },
-      {
-        key: props.keyCRM[2],
-        name: props.columnsCRM[2],
-        fieldName: 'modifiedBy',
-        minWidth: 70,
-        maxWidth: 90,
-        isResizable: true,
-        isCollapsible: true,
-        data: 'string',
-        onColumnClick: this._onColumnClick,
-        onRender: (item: IDocument) => {
-          return <span>{item.lastName}</span>;
-        },
-        isPadded: true,
-      },
-      {
-        key: props.keyCRM[3],
-        name: props.columnsCRM[3],
-        fieldName: 'fileSizeRaw',
-        minWidth: 70,
-        maxWidth: 90,
-        isResizable: true,
-        isCollapsible: true,
-        data: 'number',
-        onColumnClick: this._onColumnClick,
-        onRender: (item: IDocument) => {
-          return <span>{item.age}</span>;
-        },
-      },
-    ];
-
+    let columns = this._getColumns(this._props.valueCRM, this._props.columnsCRM);
+    
     this._selection = new Selection({
       onSelectionChanged: () => {
         this.setState({
@@ -165,8 +110,8 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
   }
 
   public render() {
-    const { columns, items, selectionDetails, isModalSelection, announcedMessage } = this.state;
-
+    const { columns, items, selectionDetails, announcedMessage } = this.state;
+    this._getColumns(this._props.valueCRM, this._props.columnsCRM);
     return (
       <Fabric>
         <div className={classNames.controlWrapper}>
@@ -177,7 +122,8 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
             <DetailsList
               items={items}
               compact={true}
-              columns={columns}
+              //columns={columns}
+              columns={this._getColumns(this._props.valueCRM, this._props.columnsCRM)}
               selectionMode={SelectionMode.multiple}
               getKey={this._getKey}
               setKey="multiple"
@@ -214,7 +160,58 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
   private _onItemInvoked(item: any): void {
     alert(`Item invoked: ${item.id}`);
   }
-
+  private _getColumns(valueCRM:any, columnsCRM:any): IColumn[]{
+    return [
+      {
+        key: valueCRM[0].id,
+        name: capitalizeFirstLetter(columnsCRM[1]),
+        fieldName: 'name',
+        minWidth: 210,
+        maxWidth: 350,
+        isRowHeader: true,
+        isResizable: true,
+        isSorted: true,
+        isSortedDescending: false,
+        sortAscendingAriaLabel: 'Sorted A to Z',
+        sortDescendingAriaLabel: 'Sorted Z to A',
+        onColumnClick: this._onColumnClick,
+        onRender: (item: IDocument) => {
+              return <span>{item.firstName}</span>;
+        },
+        data: 'string',
+        isPadded: true,
+      },
+      {
+        key: valueCRM[1].id,
+        name: capitalizeFirstLetter(columnsCRM[2]),
+        fieldName: 'modifiedBy',
+        minWidth: 70,
+        maxWidth: 90,
+        isResizable: true,
+        isCollapsible: true,
+        data: 'string',
+        onColumnClick: this._onColumnClick,
+        onRender: (item: IDocument) => {
+          return <span>{item.lastName}</span>;
+        },
+        isPadded: true,
+      },
+      {
+        key: valueCRM[2].id,
+        name: capitalizeFirstLetter(columnsCRM[3]),
+        fieldName: 'fileSizeRaw',
+        minWidth: 70,
+        maxWidth: 90,
+        isResizable: true,
+        isCollapsible: true,
+        data: 'number',
+        onColumnClick: this._onColumnClick,
+        onRender: (item: IDocument) => {
+          return <span>{item.age}</span>;
+        },
+      },
+    ];
+  }
   private _getSelectionDetails(): string {
     const selectionCount = this._selection.getSelectedCount();
     switch (selectionCount) {
@@ -257,15 +254,19 @@ function _copyAndSort<T>(items: T[], columnKey: string, isSortedDescending?: boo
   const key = columnKey as keyof T;
   return items.slice(0).sort((a: T, b: T) => ((isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1));
 }
+function capitalizeFirstLetter(value:string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
 
 function _generateDocuments(valueCRM:any) {
   const items: IDocument[] = [];
     valueCRM.map((value:any, index: number) => {
+        let val:any = JSON.parse(value);
         items.push({
-          id: value.id,
-          firstName: value.firstName,
-          lastName: value.lastName,
-          age: value.age
+          id: val.id,
+          firstName: val.firstName,
+          lastName: val.lastName,
+          age: val.age
         });
     });
   return items;
