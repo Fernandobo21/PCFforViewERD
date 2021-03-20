@@ -10,12 +10,10 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	private _container: HTMLDivElement;
 	private _context: ComponentFramework.Context<IInputs>;
 	private props:any = {
-		keyCRM: [],
 		columnsCRM: [],
 		valueCRM: [],
 		typeCRM: []
 	};
-
 	/**
 	 * Empty constructor.
 	 */
@@ -30,15 +28,11 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 * @param notifyOutputChanged A callback method to alert the framework that the control has new outputs ready to be retrieved asynchronously.
 	 * @param state A piece of data that persists in one session for a single user. Can be set at any point in a controls life cycle by calling 'setControlState' in the Mode interface.
 	 * @param container If a control is marked control-type='standard', it will receive an empty div element within which it can render its content.
-	 */
+	 */      
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
 	{
 		this.props = {
-			keyCRM: ['19449c33-f214-4365-9739-3f54a7420166', '3a78f665-d31d-444a-b19b-fd72e69d35bf', '56dafe62-14cc-45cc-86c7-74a789283c76', '3d2880c3-7c62-42ea-bb4d-9ecec0607334', '0c566692-79d7-4172-aeaf-9f7fb98429f6', '89a7f0da-1c9c-4583-b395-e4b3afec39b7', '3f25b208-0d70-4913-80b4-0999724fab5a', '1fc52a93-a3e7-4a6a-ad49-009597282c72', 'ac6372fa-f1ca-4748-9051-17e6fc802536', 'f76baa88-98c5-41eb-b253-be669618eeda'],
-			valueCRM: [
-				{id: '19449c33-f214-4365-9739-3f54a7420166', lastName: 'Bo Gimenez', firstName: 'Fernando', age: 36},
-				{id: '3a78f665-d31d-444a-b19b-fd72e69d35bf', lastName: 'Cuesta Vera', firstName: 'Cesar', age: 25},
-				{id: '56dafe62-14cc-45cc-86c7-74a789283c76', lastName: 'Rincon Dynamics', firstName: 'El', age: 11}],
+			valueCRM: [],
 			columnsCRM: ['id', 'firstName', 'lastName', 'age'],
 			typeCRM: ['string', 'string', 'string', 'number']
 			/*
@@ -63,11 +57,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		context.mode.allocatedWidth = 1000;
 		
 		this.props = {
-			keyCRM: ['19449c33-f214-4365-9739-3f54a7420166', '3a78f665-d31d-444a-b19b-fd72e69d35bf', '56dafe62-14cc-45cc-86c7-74a789283c76', '3d2880c3-7c62-42ea-bb4d-9ecec0607334', '0c566692-79d7-4172-aeaf-9f7fb98429f6', '89a7f0da-1c9c-4583-b395-e4b3afec39b7', '3f25b208-0d70-4913-80b4-0999724fab5a', '1fc52a93-a3e7-4a6a-ad49-009597282c72', 'ac6372fa-f1ca-4748-9051-17e6fc802536', 'f76baa88-98c5-41eb-b253-be669618eeda'],
-			valueCRM: [
-				{id: '19449c33-f214-4365-9739-3f54a7420166', lastName: 'Bo Gimenez', firstName: 'Fernando', age: 36},
-				{id: '3a78f665-d31d-444a-b19b-fd72e69d35bf', lastName: 'Cuesta Vera', firstName: 'Cesar', age: 25},
-				{id: '56dafe62-14cc-45cc-86c7-74a789283c76', lastName: 'Rincon Dynamics', firstName: 'El', age: 11}],
+			valueCRM: [],
 			columnsCRM: ['id', 'firstName', 'lastName', 'age'],
 			typeCRM: ['string', 'string', 'string', 'number']
 			/*
@@ -83,9 +73,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		
 		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
 			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
-			debugger;
-			let name = currentRecord.getFormattedValue("NameAttribute");
-			let number = currentRecord.getValue("NumberAttribute");	
+			this.props.valueCRM.push(currentRecord.getFormattedValue("valuesCRM"));
 		}
 		
 		//context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
@@ -107,7 +95,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 */
 	public destroy(): void
 	{
-		this.props = null;
+		//this.props = null;
 		ReactDOM.unmountComponentAtNode(this._container);
 	}
 
