@@ -15,7 +15,6 @@ export class MaterialUIDataGrid extends React.Component<{}> {
   public _generateColumns(columnsCRM:any, typeCRM:any)
   {
     this._columns = [];
-    debugger;
     columnsCRM.map((value: string, index: number) => {
       this._columns.push(
         {
@@ -54,13 +53,13 @@ export class MaterialUIDataGrid extends React.Component<{}> {
   {
     this._rows = [];
     valueCRM.map((value:any, index: number) => {
-      debugger;
+      let val:any = JSON.parse(value);
        this._rows.push(
          {
-           id: value.id,
-           lastName: value.lastName,
-           firstName: value.firstName,
-           age: value.age
+           id: val.id,
+           lastName: val.lastName,
+           firstName: val.firstName,
+           age: val.age
          }
        );
      });
