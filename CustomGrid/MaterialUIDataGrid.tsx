@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, ColDef} from '@material-ui/data-grid';
+import { DataGrid, ColDef } from '@material-ui/data-grid';
 
 export class MaterialUIDataGrid extends React.Component<{}> {
   private _rows:any;
@@ -56,9 +56,9 @@ export class MaterialUIDataGrid extends React.Component<{}> {
        this._rows.push(
          {
            id: value.id,
-           lastName: value.lastName,
-           firstName: value.firstName,
-           age: value.age
+           lastname: value.lastName,
+           firstname: value.firstName,
+           new_age: value.age
          }
        );
      });
