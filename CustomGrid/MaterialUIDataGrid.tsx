@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid, ColDef, ValueGetterParams } from '@material-ui/data-grid';
+import { DataGrid, ColDef} from '@material-ui/data-grid';
 
 export class MaterialUIDataGrid extends React.Component<{}> {
   private _rows:any;
@@ -53,13 +53,12 @@ export class MaterialUIDataGrid extends React.Component<{}> {
   {
     this._rows = [];
     valueCRM.map((value:any, index: number) => {
-      let val:any = JSON.parse(value);
        this._rows.push(
          {
-           id: val.id,
-           lastName: val.lastName,
-           firstName: val.firstName,
-           age: val.age
+           id: value.id,
+           lastName: value.lastName,
+           firstName: value.firstName,
+           age: value.age
          }
        );
      });
