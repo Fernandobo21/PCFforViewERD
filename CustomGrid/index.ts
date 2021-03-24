@@ -31,19 +31,6 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 */      
 	public init(context: ComponentFramework.Context<IInputs>, notifyOutputChanged: () => void, state: ComponentFramework.Dictionary, container:HTMLDivElement)
 	{
-		this.props = {
-			valueCRM: [],
-			columnsCRM: ['id', 'firstName', 'lastName', 'age'],
-			typeCRM: ['string', 'string', 'string', 'number']
-			/*
-				'string' (default)
-				'number'
-				'date'
-				'dateTime'
-			*/
-		}
-		context.mode.allocatedHeight = 1000;
-		context.mode.allocatedWidth = 1000;
 		this._context = context;
 		this._container = container;
 	}
@@ -53,12 +40,9 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	 */
 	public updateView(context: ComponentFramework.Context<IInputs>): void
 	{
-		context.mode.allocatedHeight = 1000;
-		context.mode.allocatedWidth = 1000;
-		
 		this.props = {
 			valueCRM: [],
-			columnsCRM: ['id', 'firstName', 'lastName', 'age'],
+			columnsCRM: ['id', 'firstname', 'lastname', 'new_age'],
 			typeCRM: ['string', 'string', 'string', 'number']
 			/*
 				'string' (default)
@@ -68,12 +52,22 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 			*/
 		}
 
-		var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
-		var alertOptions = {​​ height: 120, width: 260 }​​;
-		
+		// var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
+		// var alertOptions = {​​ height: 120, width: 260 }​​;
+		var cols = this._context.parameters.columnsCRM.raw || "";
+		this.props.columnsCRM = Array.from(cols.split(','));
 		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
 			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
-			this.props.valueCRM.push(currentRecord.getFormattedValue("valuesCRM"));
+			this.props.valueCRM.push(
+				{
+					id: currentRecordId,
+					firstName: currentRecord.getFormattedValue(this.props.columnsCRM[1]),
+					//firstName: currentRecord.getFormattedValue("firstname"),
+					//lastName: currentRecord.getFormattedValue("lastname"),
+					lastName: currentRecord.getFormattedValue(this.props.columnsCRM[2]),
+					age: currentRecord.getFormattedValue(this.props.columnsCRM[3])
+					//age: currentRecord.getFormattedValue("new_age")
+				});
 		}
 		
 		//context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
@@ -111,6 +105,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 					),
 					this._container
 				);
+				break;
 			case "MaterialUI":
 				return ReactDOM.render(
 					React.createElement(
@@ -118,7 +113,8 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 						this.props
 					),
 					this._container
-				);				
+				);	
+				break;			
 		}
 	}
 }
