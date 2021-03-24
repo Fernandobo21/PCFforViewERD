@@ -6,6 +6,7 @@
 export interface IInputs {
     gridSelect: ComponentFramework.PropertyTypes.EnumProperty<"FluentUI" | "MaterialUI">;
     columnsCRM: ComponentFramework.PropertyTypes.StringProperty;
+    namesColumnsCRM: ComponentFramework.PropertyTypes.StringProperty;
     sampleDataSet: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {
