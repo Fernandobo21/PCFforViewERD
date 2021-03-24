@@ -33,6 +33,41 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	{
 		this._context = context;
 		this._container = container;
+		this.props = {
+			valueCRM: [],
+			columnsCRM: ['id','firstname','lastname','new_age'],
+			typeCRM: ['string','string','string','number']
+			/*
+				'string' (default)
+				'number'
+				'date'
+				'dateTime'
+			*/
+		}
+
+		// var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
+		// var alertOptions = {​​ height: 120, width: 260 }​​;
+		var cols = this._context.parameters.columnsCRM.raw || "";
+		this.props.columnsCRM = Array.from(cols.split(','));
+		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
+			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
+			if(currentRecord.getFormattedValue(this.props.columnsCRM[0]) != null){
+				this.props.valueCRM.push(
+					{
+						id: currentRecordId,
+						firstName: (currentRecord.getFormattedValue(this.props.columnsCRM[0]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[0]) : "",
+						//firstName: currentRecord.getFormattedValue("firstname"),
+						//lastName: currentRecord.getFormattedValue("lastname"),
+						lastName: (currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[1]) : "",
+						age: (currentRecord.getFormattedValue(this.props.columnsCRM[2]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[2]) : 0
+						//age: currentRecord.getFormattedValue("new_age")
+					});
+			}
+		}
+
+		//context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
+		this.renderView(this._context.parameters.gridSelect.raw);
+
 	}
 	/**
 	 * Called when any value in the property bag has changed. This includes field values, data-sets, global values such as container height and width, offline status, control metadata values such as label, visible, etc.
@@ -58,20 +93,23 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		this.props.columnsCRM = Array.from(cols.split(','));
 		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
 			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
-			this.props.valueCRM.push(
-				{
-					id: currentRecordId,
-					firstName: currentRecord.getFormattedValue(this.props.columnsCRM[1]),
-					//firstName: currentRecord.getFormattedValue("firstname"),
-					//lastName: currentRecord.getFormattedValue("lastname"),
-					lastName: currentRecord.getFormattedValue(this.props.columnsCRM[2]),
-					age: currentRecord.getFormattedValue(this.props.columnsCRM[3])
-					//age: currentRecord.getFormattedValue("new_age")
-				});
+			if(currentRecord.getFormattedValue(this.props.columnsCRM[0]) != null){
+				this.props.valueCRM.push(
+					{
+						id: currentRecordId,
+						firstName: (currentRecord.getFormattedValue(this.props.columnsCRM[0]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[0]) : "",
+						//firstName: currentRecord.getFormattedValue("firstname"),
+						//lastName: currentRecord.getFormattedValue("lastname"),
+						lastName: (currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[1]) : "",
+						age: (currentRecord.getFormattedValue(this.props.columnsCRM[2]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[2]) : 0
+						//age: currentRecord.getFormattedValue("new_age")
+					});
+			}
 		}
-		
+
 		//context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
 		this.renderView(this._context.parameters.gridSelect.raw);
+
 	}
 
 	/** 
