@@ -164,7 +164,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
     return [
       {
         key: valueCRM[0].id,
-        name: capitalizeFirstLetter(columnsCRM[1]),
+        name: capitalizeFirstLetter(columnsCRM[0]),
         fieldName: 'name',
         minWidth: 210,
         maxWidth: 350,
@@ -183,7 +183,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       },
       {
         key: valueCRM[1].id,
-        name: capitalizeFirstLetter(columnsCRM[2]),
+        name: capitalizeFirstLetter(columnsCRM[1]),
         fieldName: 'modifiedBy',
         minWidth: 70,
         maxWidth: 90,
@@ -198,7 +198,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       },
       {
         key: valueCRM[2].id,
-        name: capitalizeFirstLetter(columnsCRM[3]),
+        name: capitalizeFirstLetter(columnsCRM[2]),
         fieldName: 'fileSizeRaw',
         minWidth: 70,
         maxWidth: 90,
@@ -261,12 +261,11 @@ function capitalizeFirstLetter(value:string) {
 function _generateDocuments(valueCRM:any) {
   const items: IDocument[] = [];
     valueCRM.map((value:any, index: number) => {
-        let val:any = JSON.parse(value);
         items.push({
-          id: val.id,
-          firstName: val.firstName,
-          lastName: val.lastName,
-          age: val.age
+          id: value.id,
+          firstName: value.firstName,
+          lastName: value.lastName,
+          age: value.age
         });
     });
   return items;
