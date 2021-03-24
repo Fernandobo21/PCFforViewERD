@@ -11,6 +11,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	private _context: ComponentFramework.Context<IInputs>;
 	private props:any = {
 		columnsCRM: [],
+		namesColumnsCRM: [],
 		valueCRM: [],
 		typeCRM: []
 	};
@@ -35,6 +36,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		this._container = container;
 		this.props = {
 			valueCRM: [],
+			namesColumnsCRM: [],
 			columnsCRM: ['id','firstname','lastname','new_age'],
 			typeCRM: ['string','string','string','number']
 			/*
@@ -48,7 +50,9 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		// var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
 		// var alertOptions = {​​ height: 120, width: 260 }​​;
 		var cols = this._context.parameters.columnsCRM.raw || "";
+		var colsNames = this._context.parameters.namesColumnsCRM.raw || "";
 		this.props.columnsCRM = Array.from(cols.split(','));
+		this.props.namesColumnsCRM = Array.from(colsNames.split(','));
 		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
 			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
 			if(currentRecord.getFormattedValue(this.props.columnsCRM[0]) != null){
@@ -77,6 +81,7 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 	{
 		this.props = {
 			valueCRM: [],
+			namesColumnsCRM: [],
 			columnsCRM: ['id', 'firstname', 'lastname', 'new_age'],
 			typeCRM: ['string', 'string', 'string', 'number']
 			/*
@@ -90,7 +95,9 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 		// var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
 		// var alertOptions = {​​ height: 120, width: 260 }​​;
 		var cols = this._context.parameters.columnsCRM.raw || "";
+		var colsNames = this._context.parameters.namesColumnsCRM.raw || "";
 		this.props.columnsCRM = Array.from(cols.split(','));
+		this.props.namesColumnsCRM = Array.from(colsNames.split(','));
 		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
 			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
 			if(currentRecord.getFormattedValue(this.props.columnsCRM[0]) != null){
