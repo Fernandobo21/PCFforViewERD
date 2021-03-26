@@ -1,27 +1,29 @@
 import * as React from 'react';
-import { DataGrid, ColDef } from '@material-ui/data-grid';
+import { DataGrid, ColDef, ValueGetterParams} from '@material-ui/data-grid';
 
 export class MaterialUIDataGrid extends React.Component<{}> {
   private _rows:any;
   private _columns:ColDef[];
   constructor(props:any) {
     super(props);
-    this._generateColumns(props.columnsCRM, props.typeCRM);
+    this._generateColumns(props.columnsCRM, props.typeCRM, props.namesColumnsCRM);
     this._generateRows(props.valueCRM);
   } 
   public render() {
     return (<div style={{width: '1500px', height: '400px'}}><DataGrid rows={this._rows} columns={this._columns} pageSize={5} checkboxSelection /></div>);
   } 
-  public _generateColumns(columnsCRM:any, typeCRM:any)
+  public _generateColumns(columnsCRM:any, typeCRM:any, columnsDisplayNameCRM:any)
   {
     this._columns = [];
     columnsCRM.map((value: string, index: number) => {
       this._columns.push(
         {
           field: value,
-          headerName: this.capitalizeFirstLetter(value),
+          headerName: this.capitalizeFirstLetter(columnsDisplayNameCRM[index]),
           width: 130,
-          type: typeCRM[index]
+          type: typeCRM[index],
+          valueGetter: (params: ValueGetterParams) =>
+           `${params.getValue(value) || ''} ${params.getValue('lastName') || ''}`
         }
       );
     });
@@ -56,9 +58,9 @@ export class MaterialUIDataGrid extends React.Component<{}> {
        this._rows.push(
          {
            id: value.id,
-           lastname: value.lastName,
-           firstname: value.firstName,
-           new_age: value.age
+           lastName: value.lastName,
+           firstName: value.firstName,
+           age: value.age
          }
        );
      });
