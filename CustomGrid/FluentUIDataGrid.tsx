@@ -90,7 +90,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
     //     )
     //   });
     // }
-    let columns = this._getColumns(this._props.valueCRM, this._props.columnsCRM);
+    let columns = this._getColumns(this._props.valueCRM, this._props.columnsCRM, this._props.namesColumnsCRM);
     
     this._selection = new Selection({
       onSelectionChanged: () => {
@@ -111,7 +111,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
 
   public render() {
     const { columns, items, selectionDetails, announcedMessage } = this.state;
-    this._getColumns(this._props.valueCRM, this._props.columnsCRM);
+    this._getColumns(this._props.valueCRM, this._props.columnsCRM, this._props.namesColumnsCRM);
     return (
       <Fabric>
         <div className={classNames.controlWrapper}>
@@ -123,7 +123,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
               items={items}
               compact={true}
               //columns={columns}
-              columns={this._getColumns(this._props.valueCRM, this._props.columnsCRM)}
+              columns={this._getColumns(this._props.valueCRM, this._props.columnsCRM,this._props.namesColumnsCRM)}
               selectionMode={SelectionMode.multiple}
               getKey={this._getKey}
               setKey="multiple"
@@ -160,11 +160,11 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
   private _onItemInvoked(item: any): void {
     alert(`Item invoked: ${item.id}`);
   }
-  private _getColumns(valueCRM:any, columnsCRM:any): IColumn[]{
+  private _getColumns(valueCRM:any, columnsCRM:any,namesColumnsCRM: any): IColumn[]{
     return [
       {
         key: valueCRM[0].id,
-        name: capitalizeFirstLetter(columnsCRM[0]),
+        name: capitalizeFirstLetter(namesColumnsCRM[0]),
         fieldName: 'name',
         minWidth: 210,
         maxWidth: 350,
@@ -183,7 +183,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       },
       {
         key: valueCRM[1].id,
-        name: capitalizeFirstLetter(columnsCRM[1]),
+        name: capitalizeFirstLetter(namesColumnsCRM[1]),
         fieldName: 'modifiedBy',
         minWidth: 70,
         maxWidth: 90,
@@ -198,7 +198,7 @@ export class DetailsListDocumentsExample extends React.Component<{}, IDetailsLis
       },
       {
         key: valueCRM[2].id,
-        name: capitalizeFirstLetter(columnsCRM[2]),
+        name: capitalizeFirstLetter(namesColumnsCRM[2]),
         fieldName: 'fileSizeRaw',
         minWidth: 70,
         maxWidth: 90,
