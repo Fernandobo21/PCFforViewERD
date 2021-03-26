@@ -10,7 +10,7 @@ export class MaterialUIDataGrid extends React.Component<{}> {
     this._generateRows(props.valueCRM);
   } 
   public render() {
-    return (<div style={{width: '1500px', height: '400px'}}><DataGrid rows={this._rows} columns={this._columns} pageSize={5} checkboxSelection /></div>);
+    return (<div style={{width: '99%', height: '99%'}}><DataGrid rows={this._rows} columns={this._columns} pageSize={5} checkboxSelection /></div>);
   } 
   public _generateColumns(columnsCRM:any, typeCRM:any, columnsDisplayNameCRM:any)
   {
@@ -21,22 +21,10 @@ export class MaterialUIDataGrid extends React.Component<{}> {
           field: value,
           headerName: this.capitalizeFirstLetter(columnsDisplayNameCRM[index]),
           width: 130,
-          type: typeCRM[index],
-          valueGetter: (params: ValueGetterParams) =>
-           `${params.getValue(value) || ''} ${params.getValue('lastName') || ''}`
+          type: typeCRM[index]
         }
       );
     });
-    // this._columns = [
-    //   { field: 'id', headerName: 'ID', width: 70 },
-    //   { field: 'firstName', headerName: 'First name', width: 130 },
-    //   { field: 'lastName', headerName: 'Last name', width: 130 },
-    //   {
-    //     field: 'age',
-    //     headerName: 'Age',
-    //     type: 'number',
-    //     width: 90,
-    //   },
     //   {
     //     field: 'fullName',
     //     headerName: 'Full name',
@@ -58,9 +46,9 @@ export class MaterialUIDataGrid extends React.Component<{}> {
        this._rows.push(
          {
            id: value.id,
-           lastName: value.lastName,
-           firstName: value.firstName,
-           age: value.age
+           lastname: value.lastName,
+           firstname: value.firstName,
+           new_age: value.age
          }
        );
      });
