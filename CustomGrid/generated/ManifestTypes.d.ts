@@ -5,8 +5,6 @@
 // Define IInputs and IOutputs Type. They should match with ControlManifest.
 export interface IInputs {
     gridSelect: ComponentFramework.PropertyTypes.EnumProperty<"FluentUI" | "MaterialUI">;
-    columnsCRM: ComponentFramework.PropertyTypes.StringProperty;
-    namesColumnsCRM: ComponentFramework.PropertyTypes.StringProperty;
     sampleDataSet: ComponentFramework.PropertyTypes.DataSet;
 }
 export interface IOutputs {
