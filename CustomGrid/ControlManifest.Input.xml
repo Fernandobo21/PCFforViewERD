@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest>
-  <control namespace="elrincon" constructor="CustomGrid" version="0.0.10" display-name-key="CustomGrid" description-key="CustomGrid description" control-type="standard">
+  <control namespace="elrincon" constructor="CustomGrid" version="0.2.7" display-name-key="CustomGrid" description-key="CustomGrid description" control-type="standard">
     <!-- dataset node represents a set of entity records on CDS; allow more than one datasets -->
     <data-set name="sampleDataSet" display-name-key="Dataset_Display_Key">
     </data-set>
@@ -8,8 +8,6 @@
       <value name="FluentUI" display-name-key="FluentUI" description-key="Render the FluentUI grid" default="true">FluentUI</value>
       <value name="MaterialUI" display-name-key="MaterialUI" description-key="Render the MaterialUI grid" >MaterialUI</value>
     </property>
-    <property name="columnsCRM" display-name-key="Schema Name Columns" description-key="Schema Name Columns" of-type="SingleLine.TextArea" usage="input" required="true"></property>
-    <property name="namesColumnsCRM" display-name-key="Display Name Columns" description-key="Display Name Columns" of-type="SingleLine.TextArea" usage="input" required="true"></property>
     <resources>
       <code path="index.ts" order="1"/>
       <!-- UNCOMMENT TO ADD MORE RESOURCES
