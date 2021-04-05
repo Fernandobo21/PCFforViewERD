@@ -45,26 +45,8 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 				'dateTime'
 			*/
 		}
-		//var cols = this._context.parameters.columnsCRM.raw || "";
-		//var colsNames = this._context.parameters.namesColumnsCRM.raw || "";
-		//this.props.columnsCRM = Array.from(cols.split(','));
-		//this.props.namesColumnsCRM = Array.from(colsNames.split(','));
-		this._context.parameters.sampleDataSet.columns.map((column: DataSetInterfaces.Column, index:number) => {
-			if (!column.isHidden) this.props.columnsCRM.push(column.name);
-			this.props.namesColumnsCRM.push(column.displayName);
-		});
-		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
-			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
-			if(currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null){
-				this.props.valueCRM.push(
-					{
-						id: currentRecordId,
-						firstName: (currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[0]) : "",
-						lastName: (currentRecord.getFormattedValue(this.props.columnsCRM[2]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[1]) : "",
-						age: (currentRecord.getFormattedValue(this.props.columnsCRM[3]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[2]) : 0
-					});
-			}
-		}
+		this.fillColumns(this._context.parameters.sampleDataSet.columns);
+		this.fillValues(this._context.parameters.sampleDataSet);
 		this.renderView(this._context.parameters.gridSelect.raw);
 	}
 	/**
@@ -85,26 +67,8 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 				'dateTime'
 			*/
 		}
-
-		// var alertStrings = {​​ confirmButtonLabel: "Yes", text: "This is an alert.", title: "Sample title" }​​; 
-		// var alertOptions = {​​ height: 120, width: 260 }​​;
-		this._context.parameters.sampleDataSet.columns.map((column: DataSetInterfaces.Column, index:number) => {
-			if (!column.isHidden) this.props.columnsCRM.push(column.name);
-			this.props.namesColumnsCRM.push(column.displayName);
-		});
-		for (let currentRecordId of this._context.parameters.sampleDataSet.sortedRecordIds) {
-			let currentRecord = this._context.parameters.sampleDataSet.records[currentRecordId];
-			if(currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null){
-				this.props.valueCRM.push(
-					{
-						id: currentRecordId,
-						firstName: (currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[0]) : "",
-						lastName: (currentRecord.getFormattedValue(this.props.columnsCRM[2]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[1]) : "",
-						age: (currentRecord.getFormattedValue(this.props.columnsCRM[3]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[2]) : 0
-					});
-			}
-		}
-		//context.navigation.openAlertDialog(alertStrings, alertOptions).then( function (success) {​​ console.log("Alert dialog closed"); }​​, function (error) {​​ console.log(error.message); }​​ );
+		this.fillColumns(this._context.parameters.sampleDataSet.columns);
+		this.fillValues(this._context.parameters.sampleDataSet);
 		this.renderView(this._context.parameters.gridSelect.raw);
 	}
 
@@ -139,7 +103,6 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 					),
 					this._container
 				);
-				break;
 			case "MaterialUI":
 				return ReactDOM.render(
 					React.createElement(
@@ -147,8 +110,29 @@ export class CustomGrid implements ComponentFramework.StandardControl<IInputs, I
 						this.props
 					),
 					this._container
-				);	
-				break;			
+				);			
+		}
+	}
+	private fillColumns(columns:DataSetInterfaces.Column[])
+	{
+		columns.map((column: DataSetInterfaces.Column) => {
+			if (!column.isHidden) this.props.columnsCRM.push(column.name);
+			this.props.namesColumnsCRM.push(column.displayName);
+		});
+	}
+	private fillValues(dataset:ComponentFramework.PropertyTypes.DataSet)
+	{
+		for (let currentRecordId of dataset.sortedRecordIds) {
+			let currentRecord = dataset.records[currentRecordId];
+			if(currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null) {
+				this.props.valueCRM.push(
+					{
+						id: currentRecordId,
+						firstName: (currentRecord.getFormattedValue(this.props.columnsCRM[0]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[0]) : "",
+						lastName: (currentRecord.getFormattedValue(this.props.columnsCRM[1]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[1]) : "",
+						age: (currentRecord.getFormattedValue(this.props.columnsCRM[2]) != null) ? currentRecord.getFormattedValue(this.props.columnsCRM[2]) : 0
+					});
+			}
 		}
 	}
 }
